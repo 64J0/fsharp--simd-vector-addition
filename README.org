@@ -36,9 +36,7 @@ dotnet run -c Release
 
 Sample output:
 
-#+BEGIN_EXAMPLE
 | Method    | Mean     | Error    | StdDev   | Median   | Ratio | RatioSD |
 |-----------|----------|----------|----------|----------|-------|---------|
 | ScalarAdd | 83.53 ms | 1.790 ms | 5.279 ms | 80.69 ms |  1.00 |    0.09 |
 | SimdAdd   | 76.15 ms | 1.216 ms | 1.401 ms | 75.55 ms |  0.92 |    0.06 |
-#+END_EXAMPLE
