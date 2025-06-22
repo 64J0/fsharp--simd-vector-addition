@@ -1,0 +1,41 @@
+#+TITLE: F# SIMD Vector Addition
+
+* Overview
+
+This project explores how to implement and test SIMD (Single Instruction, Multiple Data) operations in F#, specifically using:
+- 128-bit SIMD via SSE (`System.Runtime.Intrinsics.X86.Sse`)
+- Safe memory access with `Span<T>` and `MemoryMarshal.Cast`
+- Automated unit testing with `Expecto`
+- Performance benchmarking with `BenchmarkDotNet`
+
+It compares scalar vs SIMD performance on vector addition of `float32` arrays.
+
+* Features
+
+- ✅ Safe, GC-friendly SIMD implementation (no `unsafe` blocks)
+- ✅ Fallback to scalar operations for trailing elements
+- ✅ Unit tests for correctness
+- ✅ Benchmarking suite to evaluate performance benefits
+
+* Run Unit Tests
+
+#+BEGIN_SRC bash
+dotnet test
+#+END_SRC
+
+* Run Benchmarks
+
+Compile and run in Release mode:
+
+#+BEGIN_SRC bash
+dotnet run -c Release
+#+END_SRC
+
+Sample output:
+
+#+BEGIN_EXAMPLE
+| Method    | Mean       | Error    | StdDev   |
+|-----------|------------|----------|----------|
+| ScalarAdd | 1,095.6 us | 20.18 us | 40.77 us |
+| SimdAdd   |   958.1 us | 18.94 us | 35.58 us |
+#+END_EXAMPLE
