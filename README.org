@@ -3,19 +3,22 @@
 * Overview
 
 This project explores how to implement and test SIMD (Single Instruction, Multiple Data) operations in F#, specifically using:
-- 128-bit SIMD via SSE (`System.Runtime.Intrinsics.X86.Sse`)
-- Safe memory access with `Span<T>` and `MemoryMarshal.Cast`
-- Automated unit testing with `Expecto`
-- Performance benchmarking with `BenchmarkDotNet`
 
-It compares scalar vs SIMD performance on vector addition of `float32` arrays.
+- 128-bit SIMD via SSE (~System.Runtime.Intrinsics.X86.Sse~)
+- Safe memory access with ~Span<T>~ and ~MemoryMarshal.Cast~
+- Automated unit testing with ~Expecto~
+- Performance benchmarking with ~BenchmarkDotNet~
+
+It compares scalar vs SIMD performance on vector addition of ~float32~ arrays.
+
+This program uses the *intrinsics* technology, that allows us to write low-level CPU instructions directly in high-level languages like F#, C#, or C++, without writing assembly code. They expose specific hardware features (like SIMD, cryptography, etc.) as functions/methods that map directly to processor instructions.
 
 * Features
 
-- ✅ Safe, GC-friendly SIMD implementation (no `unsafe` blocks)
-- ✅ Fallback to scalar operations for trailing elements
-- ✅ Unit tests for correctness
-- ✅ Benchmarking suite to evaluate performance benefits
+- Safe, GC-friendly SIMD implementation (no ~unsafe~ blocks)
+- Fallback to scalar operations for trailing elements
+- Unit tests for correctness
+- Benchmarking suite to evaluate performance benefits
 
 * Run Unit Tests
 
@@ -34,8 +37,8 @@ dotnet run -c Release
 Sample output:
 
 #+BEGIN_EXAMPLE
-| Method    | Mean       | Error    | StdDev   |
-|-----------|------------|----------|----------|
-| ScalarAdd | 1,095.6 us | 20.18 us | 40.77 us |
-| SimdAdd   |   958.1 us | 18.94 us | 35.58 us |
+| Method    | Mean     | Error    | StdDev   | Median   | Ratio | RatioSD |
+|-----------|----------|----------|----------|----------|-------|---------|
+| ScalarAdd | 83.53 ms | 1.790 ms | 5.279 ms | 80.69 ms |  1.00 |    0.09 |
+| SimdAdd   | 76.15 ms | 1.216 ms | 1.401 ms | 75.55 ms |  0.92 |    0.06 |
 #+END_EXAMPLE

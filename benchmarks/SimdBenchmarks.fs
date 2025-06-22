@@ -9,7 +9,7 @@ let private scalarAdd (a: float32[]) (b: float32[]) =
 
 type AddBenchmark() =
 
-    let size = 1_000_000
+    let size = 100_000_000
     let mutable a = [||]
     let mutable b = [||]
 
