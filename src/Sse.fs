@@ -28,8 +28,8 @@ let sseAdd (a: float32[]) (b: float32[]) =
 
     while i <= len - simdWidth do
         // This MemoryMarshal.Cast is used to convert the Span<float32> to a Span<Vector128<float32>>.
-        // A Span<float32> is a contiguous region of memory that can be used to represent an array or a 
-        // portion of an array. Since it has this float32 type, our program knows that each element takes 
+        // A Span<float32> is a contiguous region of memory that can be used to represent an array or a
+        // portion of an array. Since it has this float32 type, our program knows that each element takes
         // 4 bytes, and with this information it knows how to slice it properly.
         let va =
             MemoryMarshal.Cast<float32, Vector128<float32>>(spanA.Slice(i, simdWidth)).[0]
