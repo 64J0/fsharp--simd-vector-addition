@@ -35,8 +35,7 @@ let simdAddGeneric (a: float32[]) (b: float32[]) =
     while i <= len - simdWidth do
         let va = Vector<float32>(a, i)
         let vb = Vector<float32>(b, i)
-        let vsum = va + vb
-        vsum.CopyTo(result, i)
+        (va + vb).CopyTo(result, i)
         i <- i + simdWidth
 
     for j in i .. len - 1 do
