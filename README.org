@@ -46,12 +46,54 @@ Compile and run in Release mode:
 dotnet run -c Release
 #+END_SRC
 
-Sample output:
+Sample output (running as ~sudo~):
 
-| Method    | Mean     | Error    | StdDev   | Median   | Ratio | RatioSD |
-|-----------|----------|----------|----------|----------|-------|---------|
-| ScalarAdd | 83.53 ms | 1.790 ms | 5.279 ms | 80.69 ms |  1.00 |    0.09 |
-| SimdAdd   | 76.15 ms | 1.216 ms | 1.401 ms | 75.55 ms |  0.92 |    0.06 |
+#+BEGIN_EXAMPLE
+// * Summary *
+
+BenchmarkDotNet v0.15.2, Linux Ubuntu 24.04.2 LTS (Noble Numbat)
+13th Gen Intel Core i7-13620H 4.90GHz, 1 CPU, 16 logical and 10 physical cores
+.NET SDK 9.0.101
+  [Host]     : .NET 9.0.0 (9.0.24.52809), X64 RyuJIT AVX2 DEBUG
+  DefaultJob : .NET 9.0.0 (9.0.24.52809), X64 RyuJIT AVX2
+
+
+| Method    | size      | Mean          | Error       | StdDev      | Ratio | Gen0         | Gen1      | Gen2      | Allocated   | Alloc Ratio |
+|---------- |---------- |--------------:|------------:|------------:|------:|-------------:|----------:|----------:|------------:|------------:|
+| ScalarAdd | 10000     |      6.701 ms |   0.0425 ms |   0.0398 ms |  1.00 |     492.1875 |   85.9375 |         - |     5.91 MB |        1.00 |
+| SimdAdd   | 10000     |      7.191 ms |   0.0308 ms |   0.0288 ms |  1.07 |     492.1875 |   85.9375 |         - |     5.91 MB |        1.00 |
+|           |           |               |             |             |       |              |           |           |             |             |
+| ScalarAdd | 1000000   |    677.645 ms |   4.2163 ms |   3.9439 ms |  1.00 |   48000.0000 | 1000.0000 | 1000.0000 |   591.28 MB |        1.00 |
+| SimdAdd   | 1000000   |    708.968 ms |   3.2363 ms |   2.8689 ms |  1.05 |   48000.0000 | 1000.0000 | 1000.0000 |   591.28 MB |        1.00 |
+|           |           |               |             |             |       |              |           |           |             |             |
+| ScalarAdd | 100000000 | 65,686.880 ms | 100.2052 ms |  93.7321 ms |  1.00 | 4847000.0000 | 7000.0000 | 1000.0000 | 59127.81 MB |        1.00 |
+| SimdAdd   | 100000000 | 70,597.910 ms | 223.2011 ms | 208.7824 ms |  1.07 | 4847000.0000 | 8000.0000 | 1000.0000 | 59127.81 MB |        1.00 |
+
+// * Hints *
+Outliers
+  AddBenchmark.SimdAdd: Default -> 1 outlier  was  removed, 2 outliers were detected (704.29 ms, 717.26 ms)
+
+// * Legends *
+  size        : Value of the 'size' parameter
+  Mean        : Arithmetic mean of all measurements
+  Error       : Half of 99.9% confidence interval
+  StdDev      : Standard deviation of all measurements
+  Ratio       : Mean of the ratio distribution ([Current]/[Baseline])
+  Gen0        : GC Generation 0 collects per 1000 operations
+  Gen1        : GC Generation 1 collects per 1000 operations
+  Gen2        : GC Generation 2 collects per 1000 operations
+  Allocated   : Allocated memory per single operation (managed only, inclusive, 1KB = 1024B)
+  Alloc Ratio : Allocated memory ratio distribution ([Current]/[Baseline])
+  1 ms        : 1 Millisecond (0.001 sec)
+
+// * Diagnostic Output - MemoryDiagnoser *
+
+
+// ***** BenchmarkRunner: End *****
+Run time: 00:39:35 (2375.52 sec), executed benchmarks: 6
+
+Global total time: 00:39:41 (2381.03 sec), executed benchmarks: 6
+#+END_EXAMPLE
 
 ** Related projects:
 
