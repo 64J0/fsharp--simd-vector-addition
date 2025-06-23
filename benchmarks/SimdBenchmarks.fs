@@ -2,27 +2,24 @@ module SimdBenchmarks
 
 open BenchmarkDotNet.Attributes
 open System
-open Simd.Sse
 
-let private scalarAdd (a: float32[]) (b: float32[]) =
-    Array.map2 (+) a b
+let private scalarAdd (a: float32[]) (b: float32[]) = Array.map2 (+) a b
 
+let private getRandomNumber () =
+    let rand = Random 42
+    float32 (rand.NextDouble())
+
+[<MemoryDiagnoser>]
 type AddBenchmark() =
 
-    let size = 100_000_000
-    let mutable a = [||]
-    let mutable b = [||]
+    [<Params(10_000, 1_000_000, 100_000_000)>]
+    member val size: int = 0 with get, set
 
-    [<GlobalSetup>]
-    member _.Setup() =
-        let rand = Random 42
-        a <- Array.init size (fun _ -> float32 (rand.NextDouble()))
-        b <- Array.init size (fun _ -> float32 (rand.NextDouble()))
+    member self.a: float32[] = Array.init self.size (fun _ -> getRandomNumber ())
+    member self.b: float32[] = Array.init self.size (fun _ -> getRandomNumber ())
 
     [<Benchmark(Baseline = true)>]
-    member _.ScalarAdd() =
-        scalarAdd a b
+    member self.ScalarAdd() = scalarAdd self.a self.b
 
     [<Benchmark>]
-    member _.SimdAdd() =
-        sseAdd a b
+    member self.SimdAdd() = Simd.Sse.sseAdd self.a self.b
