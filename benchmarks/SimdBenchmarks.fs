@@ -12,7 +12,8 @@ let private getRandomNumber () =
 [<MemoryDiagnoser>]
 type AddBenchmark() =
 
-    [<Params(10_000, 1_000_000, 100_000_000)>]
+    // [<Params(10_000, 1_000_000, 100_000_000)>]
+    [<Params(100, 10_000, 1_000_000)>]
     member val size: int = 0 with get, set
 
     member self.a: float32[] = Array.init self.size (fun _ -> getRandomNumber ())
@@ -23,3 +24,6 @@ type AddBenchmark() =
 
     [<Benchmark>]
     member self.SimdAdd() = Simd.Sse.sseAdd self.a self.b
+
+    [<Benchmark>]
+    member self.SimdAddGeneric() = Simd.Sse.simdAddGeneric self.a self.b
