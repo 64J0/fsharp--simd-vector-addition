@@ -98,5 +98,6 @@ Global total time: 00:39:41 (2381.03 sec), executed benchmarks: 6
 ** Related projects:
 
 - [[https://github.com/64J0/samples--assembly][64J0/samples--assembly]]
+- [[https://github.com/CBGonzalez/Core3Intrinsics-Intro][CBGonzalez/Core3Intrinsics-Intro]]
 - [[https://github.com/CBGonzalez/SIMDPerformance][CBGonzalez/SIMDPerformance]]
 - [[https://github.com/CBGonzalez/SIMDIntro][CBGonzalez/SIMDIntro]]
