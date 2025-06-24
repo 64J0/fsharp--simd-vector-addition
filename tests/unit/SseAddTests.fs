@@ -9,6 +9,22 @@ let tests =
         "SIMD Addition (Safe) Tests"
         [
 
+          test "SPECIFIC :: Correct result with 3 elements (SIMD width)" {
+              let a = [| 1.0f; 2.0f; 3.0f |]
+              let b = [| 0.5f; 0.5f; 0.5f |]
+              let expected = Array.map2 (+) a b
+              let actual = sseAdd a b
+              Expect.equal actual expected "Should add correctly using SSE"
+          }
+
+          test "GENERIC :: Correct result with 3 elements (SIMD width)" {
+              let a = [| 1.0f; 2.0f; 3.0f |]
+              let b = [| 0.5f; 0.5f; 0.5f |]
+              let expected = Array.map2 (+) a b
+              let actual = simdAddGeneric a b
+              Expect.equal actual expected "Should add correctly using generic SIMD"
+          }
+
           test "SPECIFIC :: Correct result with 4 elements (SIMD width)" {
               let a = [| 1.0f; 2.0f; 3.0f; 4.0f |]
               let b = [| 0.5f; 0.5f; 0.5f; 0.5f |]
