@@ -2,6 +2,7 @@ module Tests
 
 open Expecto
 open Simd.Sse
+open Simd.Unsafe
 
 [<Tests>]
 let tests =
@@ -25,6 +26,14 @@ let tests =
               Expect.equal actual expected "Should add correctly using generic SIMD"
           }
 
+          test "UNSAFE :: Correct result with 3 elements (SIMD width)" {
+              let a = [| 1.0f; 2.0f; 3.0f |]
+              let b = [| 0.5f; 0.5f; 0.5f |]
+              let expected = Array.map2 (+) a b
+              let actual = unsafeAdd a b
+              Expect.equal actual expected "Should add correctly using generic SIMD"
+          }
+
           test "SPECIFIC :: Correct result with 4 elements (SIMD width)" {
               let a = [| 1.0f; 2.0f; 3.0f; 4.0f |]
               let b = [| 0.5f; 0.5f; 0.5f; 0.5f |]
@@ -41,6 +50,14 @@ let tests =
               Expect.equal actual expected "Should add correctly using generic SIMD"
           }
 
+          test "UNSAFE :: Correct result with 4 elements (SIMD width)" {
+              let a = [| 1.0f; 2.0f; 3.0f; 4.0f |]
+              let b = [| 0.5f; 0.5f; 0.5f; 0.5f |]
+              let expected = Array.map2 (+) a b
+              let actual = unsafeAdd a b
+              Expect.equal actual expected "Should add correctly using generic SIMD"
+          }
+
           test "SPECIFIC :: Correct result with length not divisible by 4" {
               let a = [| 10.0f; 20.0f; 30.0f; 40.0f; 50.0f |]
               let b = [| 1.0f; 2.0f; 3.0f; 4.0f; 5.0f |]
@@ -54,6 +71,14 @@ let tests =
               let b = [| 1.0f; 2.0f; 3.0f; 4.0f; 5.0f |]
               let expected = Array.map2 (+) a b
               let actual = simdAddGeneric a b
+              Expect.sequenceEqual actual expected "Should handle extra elements with scalar fallback"
+          }
+
+          test "UNSAFE :: Correct result with length not divisible by 4" {
+              let a = [| 10.0f; 20.0f; 30.0f; 40.0f; 50.0f |]
+              let b = [| 1.0f; 2.0f; 3.0f; 4.0f; 5.0f |]
+              let expected = Array.map2 (+) a b
+              let actual = unsafeAdd a b
               Expect.sequenceEqual actual expected "Should handle extra elements with scalar fallback"
           }
 
