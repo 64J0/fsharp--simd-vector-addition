@@ -111,6 +111,7 @@ Global total time: 00:05:57 (357.46 sec), executed benchmarks: 12
 
 ** Related projects:
 
+- [[https://github.com/dotnet/runtime/blob/main/docs/coding-guidelines/vectorization-guidelines.md][.NET vectorization guidelines]]
 - [[https://github.com/64J0/samples--assembly][64J0/samples--assembly]]
 - [[https://github.com/CBGonzalez/Core3Intrinsics-Intro][CBGonzalez/Core3Intrinsics-Intro]]
 - [[https://github.com/CBGonzalez/SIMDPerformance][CBGonzalez/SIMDPerformance]]
