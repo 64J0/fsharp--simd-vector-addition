@@ -3,27 +3,29 @@ module SimdBenchmarks
 open BenchmarkDotNet.Attributes
 open System
 
-let private scalarAdd (a: float32[]) (b: float32[]) = Array.map2 (+) a b
-
-let private getRandomNumber () =
-    let rand = Random 42
-    float32 (rand.NextDouble())
-
 [<MemoryDiagnoser>]
-type AddBenchmark() =
+type AddTwoArraysBenchmark() =
 
-    // [<Params(10_000, 1_000_000, 100_000_000)>]
     [<Params(100, 10_000, 1_000_000)>]
-    member val size: int = 0 with get, set
+    member val Length: int = 0 with get, set
 
-    member self.a: float32[] = Array.init self.size (fun _ -> getRandomNumber ())
-    member self.b: float32[] = Array.init self.size (fun _ -> getRandomNumber ())
+    member val a: float32[] = [||] with get, set
+    member val b: float32[] = [||] with get, set
+
+    [<GlobalSetup>]
+    member self.Setup() =
+        let rng = Random(42)
+        self.a <- Array.init self.Length (fun _ -> float32 (rng.NextDouble()))
+        self.b <- Array.init self.Length (fun _ -> float32 (rng.NextDouble()))
 
     [<Benchmark(Baseline = true)>]
-    member self.ScalarAdd() = scalarAdd self.a self.b
+    member self.ScalarAdd() = Array.map2 (+) self.a self.b
+
+    [<Benchmark>]
+    member self.SimdAddGeneric() = Simd.Sse.simdAddGeneric self.a self.b
 
     [<Benchmark>]
     member self.SimdAdd() = Simd.Sse.sseAdd self.a self.b
 
     [<Benchmark>]
-    member self.SimdAddGeneric() = Simd.Sse.simdAddGeneric self.a self.b
+    member self.SimdUnsafe() = Simd.Unsafe.unsafeAdd self.a self.b
