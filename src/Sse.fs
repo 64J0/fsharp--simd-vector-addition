@@ -32,10 +32,14 @@ let simdAddGeneric (a: float32[]) (b: float32[]) =
 
     let mutable i = 0
 
+    let lptr = &a[0]
+    let rptr = &b[0]
+    let dptr = &result[0]
+
     while i <= len - simdWidth do
-        let va = Vector<float32>(a, i)
-        let vb = Vector<float32>(b, i)
-        (va + vb).CopyTo(result, i)
+        let va = Vector.LoadUnsafe(&lptr, unativeint i)
+        let vb = Vector.LoadUnsafe(&rptr, unativeint i)
+        (va + vb).StoreUnsafe(&dptr, unativeint i)
         i <- i + simdWidth
 
     for j in i .. len - 1 do
